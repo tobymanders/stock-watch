@@ -2,3 +2,5 @@ include/
 lib/
 bin/
 .Python
+.DS_Store
+
