@@ -4,3 +4,4 @@ bin/
 .Python
 .DS_Store
 share/
+etc/
