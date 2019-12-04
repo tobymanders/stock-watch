@@ -1,5 +1,7 @@
 from flask import Flask, render_template
 from flask import request
+from ../src/test.py import get_results
+from ../src/htmlify.py import htmlify
 
 
 app = Flask(__name__)
@@ -17,8 +19,10 @@ def index():
 def chord_output():
     # return url
     url = request.args.get('youtube_url')
-    urlint = int(url)
-    return render_template("output.html", video=url)
+
+    results = test.get_results(url)
+    table_html = htmlify(results)
+    return render_template("output.html", table=table_html)
     # video_code = url[32:]
     #
     # model_path = 'xgb_multifinal'
