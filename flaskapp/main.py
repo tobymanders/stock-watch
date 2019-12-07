@@ -21,9 +21,9 @@ def index():
 @app.route('/output', methods=["GET", "POST"])
 def table_output():
     # return url
-    url = request.args.get('zip_code')
+    zipcode = request.args.get('zip_code')
 
-    results = getresults.main(url)
+    results = getresults.main(zipcode)
     return render_template("output.html", table=results)
 
 if __name__ == "__main__":

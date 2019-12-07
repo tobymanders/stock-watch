@@ -10,7 +10,7 @@ c = conn.cursor()
 
 c.execute('''CREATE TABLE instock
 			 (time real, storeID text, storename text, address text,
-			 city text, state text, zipcode text, product text, sku real)''')
+			 city text, state text, zipcode text, product text, sku text, lat real, long real)''')
 
 conn.commit()
 
