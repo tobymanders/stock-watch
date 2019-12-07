@@ -1,28 +1,50 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="/docs/4.1/assets/img/favicons/favicon.ico">
 
-    <title>WherePods: Where AirPods?</title>
+<head>
 
-    <link rel="canonical" href="https://getbootstrap.com/docs/4.1/examples/starter-template/">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
 
-    <!-- Bootstrap core CSS -->
-    <link href="../static/css/bootstrap.min.css" rel="stylesheet">
+  <title>Product Finder</title>
 
-    <!-- Custom styles for this template -->
-    <link href="../static/css/starter-template.css" rel="stylesheet">
-  </head>
+  <!-- Bootstrap core CSS -->
+  <link href="static/css/bootstrap.min.css" rel="stylesheet">
 
-  <body>
+</head>
 
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">Product Finder</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+      </div>
+    </div>
+  </nav>
     <!--main body-->
     <div class="container starter-template">
-        <table class="table scrollable fix-height">
+      <h1> Stores In Your Area </h1>
+
+    </div>
+    <div class="container starter-template">
+        <table class="table table-hover">
+          <thead class="thead-dark">
+          <tr>
+              <td> City </td>
+              <td> State </td>
+              <td> Address </td>
+              <td> Zip Code </td>
+            </tr>
+          </thead>
+          <tbody>
             {% for row in table %}
                 <tr>
                     {% for item in row %}
@@ -32,7 +54,9 @@
                     {% endfor %}
                 </tr>
             {% endfor %}
+          </tbody>
         </table>
     </div>
+
   </body>
 </html>
