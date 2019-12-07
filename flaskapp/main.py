@@ -9,11 +9,11 @@ import getresults
 
 app = Flask(__name__)
 
-@app.route("/", methods=["GET", "POST"])
-def home():
-    return "Hello, World!"
+# @app.route("/", methods=["GET", "POST"])
+# def home():
+#     return "Hello, World!"
 
-@app.route('/index', methods=["GET", "POST"])
+@app.route('/', methods=["GET", "POST"])
 def index():
     url = request.args.get('zip_code')
     return render_template("input.html", preset_url=url)
@@ -21,7 +21,7 @@ def index():
 @app.route('/output', methods=["GET", "POST"])
 def table_output():
     # return url
-    zipcode = request.args.get('zip_code')
+    zipcode = request.args.get('location')
 
     results = getresults.main(zipcode)
     return render_template("output.html", table=results)
