@@ -4,8 +4,7 @@ from flask import request
 import sys
 sys.path.append('../src/')
 
-from test import get_results
-from htmlify import htmlify
+from dummy import get_results
 
 
 app = Flask(__name__)
@@ -16,22 +15,16 @@ def home():
 
 @app.route('/index', methods=["GET", "POST"])
 def index():
-    url = request.args.get('youtube_url')
+    url = request.args.get('zip_code')
     return render_template("input.html", preset_url=url)
 
 @app.route('/output', methods=["GET", "POST"])
-def chord_output():
+def table_output():
     # return url
-    url = request.args.get('youtube_url')
+    url = request.args.get('zip_code')
 
     results = get_results(url)
-    table_html = htmlify(results)
-    return render_template("output.html", table=table_html)
-    # video_code = url[32:]
-    #
-    # model_path = 'xgb_multifinal'
-    # lr_predict.predict(url, model_path, f"{video_code}", 0.5, 24.5, 7, 1,
-    #                     'Models/', 'Results/', 3)
+    return render_template("output.html", table=results)
 
 if __name__ == "__main__":
     app.run(debug=True)
