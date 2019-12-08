@@ -9,14 +9,15 @@ import getresults
 
 app = Flask(__name__)
 
-# @app.route("/", methods=["GET", "POST"])
-# def home():
-#     return "Hello, World!"
 
 @app.route('/', methods=["GET", "POST"])
 def index():
     url = request.args.get('zip_code')
     return render_template("input.html", preset_url=url)
+
+@app.route('/no_results')
+def no_results():
+    return "<h1>No Results!</h1>"
 
 @app.route('/output', methods=["GET", "POST"])
 def table_output():

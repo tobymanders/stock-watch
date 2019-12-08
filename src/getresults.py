@@ -40,9 +40,11 @@ def main(address):
 	# HAVING distanta<50
 	# ORDER BY distanta desc''')
 
-	c.execute('''SELECT storename, dist(lat, long)
+	c.execute('''SELECT storename, dist(lat, lng)
 				 FROM instock
-				 WHERE dist(lat, long) < 100''')
+				 WHERE dist(lat, lng) < 100 AND sku=5706659
+				 GROUP BY storeID
+				 LIMIT 1''')
 
 
 

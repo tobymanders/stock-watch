@@ -1,55 +1,77 @@
 ## Script to update the SQL database with fresh data. 
 ## This should be run on regular cadence.
+## Must have database and latlng pickle files already in place.
 
 
 import requests
 import time
 import sqlite3
 import geocoder as gc
+import pickle
+
+nzips = 50 # take top n zip codes by population
+zips = pickle.load(open('../data/zips.pkl', 'rb'))[:nzips]
+
+gc_api_key = '9GOLlJifpGuxjGPy2519C6NkcmtXxAYM'
+latlngdict = pickle.load(open('../data/latlngdict.pkl', 'rb'))
 
 def ziptolatlng(address):
-	api_key = '9GOLlJifpGuxjGPy2519C6NkcmtXxAYM'
-	g = gc.mapquest(address, key=api_key)
-	if g.status_code==200:
-		lat, lng = g.latlng
+
+	if address in latlngdict:
+		lat, lng = latlngdict[address]
 	else:
-		lat, lng = 500, 500
+		g = gc.mapquest(address, key=gc_api_key)
+		if g.status_code==200:
+			lat, lng = g.latlng
+			latlngdict[address] = (lat, lng) # Store so do not have to fetch next time
+			pickle.dump(latlngdict, open('../data/latlngdict.pkl', 'wb'))
+		else:
+			lat, lng = 500, 500
 	return lat, lng
+
+def extract_data(json, product, sku):
+
+	req_time = time.time()
+
+	info = [(req_time, item['storeID'], item['name'], item['address'], item['city'],
+			item['state'], item['postalCode'], product, sku,
+			*ziptolatlng(item['address'] + ' ' + item['city'] + ' ' +  item['state'] + ' ' + item['postalCode'])) for item in json['stores']]
+
+	return info
+
+
+def request_json(url, zip_code):
+
+	print(f'REQUESTING ZIP CODE {zip_code}...')
+
+	res = requests.get(url)
+
+	if res.status_code==200:
+		print('SUCCESS')
+		return res.json()
+	else:
+		print('REQUEST FAILED')
+		return None
+
 
 
 def update_bestbuy():
 	# Set up Best Buy requests
 	bb_api_key = 'Syg9LF6J4rNlfmYpxgzCejev'
-	bb_product_skus = {'airpods':'6084400'}
-	zip_codes = ['55423', '44121']
-	bb_base_url = "https://api.bestbuy.com/v1/products/product_sku/stores.json?postalCode=zip_code&apiKey=" + bb_api_key
+	bb_product_skus = {'airpods_pro': '5706659', 'airpods': '6084400'}
+	zip_codes = [str(zip_) for zip_ in zips]
+	bb_base_url = 'https://api.bestbuy.com/v1/products/'
+	attribs = "?postalCode="
 
-	# Make requests and parse results
 	new_results = []
 	for product, sku in bb_product_skus.items():
 		for zip_code in zip_codes:
-			request_url = bb_base_url.replace('product_sku', sku).replace(
-				'zip_code', zip_code)
 
-			print(request_url)
+			request_url = bb_base_url + sku + '/stores.json' + attribs + zip_code + '&apiKey=' + bb_api_key
+			json = request_json(request_url, zip_code)
 
-			req_time = time.time()
-
-			res = requests.get(request_url)
-
-			if res.status_code == 200:
-				json = res.json()
-
-
-				info = [(req_time, item['storeID'], item['name'], item['address'], item['city'],
-					item['state'], item['postalCode'], product, sku,
-						*ziptolatlng(item['address'] + item['city'] + item['state'] + item['postalCode']))
-						for item in json['stores']]
-
-				new_results.extend(info)
-
-			time.sleep(0.5)
-
+			if json:
+				new_results.extend(extract_data(json, product, sku))
 
 
 	# Connect to and update database
@@ -58,6 +80,7 @@ def update_bestbuy():
 	c.executemany('INSERT INTO instock VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', new_results)
 	conn.commit()
 	conn.close()
+	print(f'SUCCESSFULLY ADDED {len(new_results)} records to the database')
 
 if __name__ == '__main__':
 	update_bestbuy()
