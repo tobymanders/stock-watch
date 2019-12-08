@@ -8,9 +8,11 @@ conn = sqlite3.connect('../data/database.db')
 
 c = conn.cursor()
 
+c.execute('DROP TABLE instock')
+
 c.execute('''CREATE TABLE instock
 			 (time real, storeID text, storename text, address text,
-			 city text, state text, zipcode text, product text, sku text, lat real, long real)''')
+			 city text, state text, zipcode text, product text, sku int, lat real, lng real)''')
 
 conn.commit()
 

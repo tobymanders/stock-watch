@@ -9,7 +9,11 @@ def main():
 
 	c.execute('SELECT * FROM instock')
 	data = c.fetchall()
+
 	return data
 
 if __name__ == "__main__":
-	print(main())
+	res = main()
+	for store in res:
+		print(store[:8])
+	print(f'{len(res)} RESULTS')
