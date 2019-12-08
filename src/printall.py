@@ -12,6 +12,11 @@ def main():
 
 	return data
 
+def return_locs():
+	data = main()
+	return [(item[-1], item[-2]) for item in data]
+
+
 if __name__ == "__main__":
 	res = main()
 	for store in res:

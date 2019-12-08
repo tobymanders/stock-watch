@@ -7,16 +7,15 @@ import sys
 import numpy as np
 import mpu
 
-def main(address):
+def main(address, product):
 
 
 	input_lat, input_lng = updatedb.ziptolatlng(address)
 
 	def dist(lat, long):
-		# return geopy.distance.distance((input_lat, input_lng), (lat, long))
 		coords_1 = (input_lat, input_lng)
 		coords_2 = (lat, long)
-		return mpu.haversine_distance(coords_1, coords_2)
+		return mpu.haversine_distance(coords_1, coords_2) * 0.621371
 
 
 	conn = sqlite3.connect('../data/database.db')
@@ -24,27 +23,13 @@ def main(address):
 	c = conn.cursor()
 
 
+	productskus = {'AirPods' : 6084400, 'AirPods Pro' : 5706659}
 
-
-
-	# c.execute('''SELECT city, state, address, zipcode FROM instock
-	# 		     LIMIT 5''')
-	# data = c.fetchall()
-
-
-	# c.execute(f'''
-	# SELECT city, state, address, zipcode, (6371 * acos( cos( radians({input_lat}) ) * cos( radians( lat ) ) * cos( radians( {input_lng} ) - radians(long) ) + sin( radians({input_lat}) ) * sin( radians(coord_lat) ) )) AS distanta
-	# FROM instock
-	# WHERE lat<>''
-	# 	AND long<>''
-	# HAVING distanta<50
-	# ORDER BY distanta desc''')
-
-	c.execute('''SELECT storename, dist(lat, lng)
+	c.execute(f"""SELECT storename, retailer, address, city, state, ROUND(dist(lat, lng), 1)
 				 FROM instock
-				 WHERE dist(lat, lng) < 100 AND sku=5706659
+				 WHERE dist(lat, lng) < 500 AND sku={productskus[product]}
 				 GROUP BY storeID
-				 LIMIT 1''')
+				 ORDER BY dist(lat, lng) ASC""")
 
 
 

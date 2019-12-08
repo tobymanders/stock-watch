@@ -11,7 +11,7 @@ c = conn.cursor()
 c.execute('DROP TABLE instock')
 
 c.execute('''CREATE TABLE instock
-			 (time real, storeID text, storename text, address text,
+			 (time real, storeID text, storename text, address text, retailer text,
 			 city text, state text, zipcode text, product text, sku int, lat real, lng real)''')
 
 conn.commit()

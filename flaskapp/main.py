@@ -25,7 +25,7 @@ def table_output():
     # return url
     zipcode = request.args.get('location')
     product = request.args.get('Product')
-    results = getresults.main(zipcode)
+    results = getresults.main(zipcode, product)
     return render_template("output.html", table=results, product=product)
 
 if __name__ == "__main__":

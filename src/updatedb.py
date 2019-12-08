@@ -9,7 +9,7 @@ import sqlite3
 import geocoder as gc
 import pickle
 
-nzips = 50 # take top n zip codes by population
+nzips = 200 # take top n zip codes by population
 zips = pickle.load(open('../data/zips.pkl', 'rb'))[:nzips]
 
 gc_api_key = '9GOLlJifpGuxjGPy2519C6NkcmtXxAYM'
@@ -33,7 +33,7 @@ def extract_data(json, product, sku):
 
 	req_time = time.time()
 
-	info = [(req_time, item['storeID'], item['name'], item['address'], item['city'],
+	info = [(req_time, item['storeID'], item['name'], item['address'], 'Best Buy', item['city'],
 			item['state'], item['postalCode'], product, sku,
 			*ziptolatlng(item['address'] + ' ' + item['city'] + ' ' +  item['state'] + ' ' + item['postalCode'])) for item in json['stores']]
 
@@ -47,11 +47,20 @@ def request_json(url, zip_code):
 	res = requests.get(url)
 
 	if res.status_code==200:
-		print('SUCCESS')
 		return res.json()
 	else:
 		print('REQUEST FAILED')
 		return None
+
+
+def add_results_to_db(new_results):
+	# Connect to and update database
+	conn = sqlite3.connect('../data/database.db')
+	c = conn.cursor()
+	c.executemany('INSERT INTO instock VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', new_results)
+	conn.commit()
+	conn.close()
+	print(f'SUCCESSFULLY ADDED {len(new_results)} records to the database')
 
 
 
@@ -67,20 +76,18 @@ def update_bestbuy():
 	for product, sku in bb_product_skus.items():
 		for zip_code in zip_codes:
 
+
 			request_url = bb_base_url + sku + '/stores.json' + attribs + zip_code + '&apiKey=' + bb_api_key
 			json = request_json(request_url, zip_code)
 
 			if json:
-				new_results.extend(extract_data(json, product, sku))
+				stores = extract_data(json, product, sku)
+				new_results.extend(stores)
+				print(f'FOUND {len(stores)} STORES')
+
+		add_results_to_db(new_results)
 
 
-	# Connect to and update database
-	conn = sqlite3.connect('../data/database.db')
-	c = conn.cursor()
-	c.executemany('INSERT INTO instock VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', new_results)
-	conn.commit()
-	conn.close()
-	print(f'SUCCESSFULLY ADDED {len(new_results)} records to the database')
 
 if __name__ == '__main__':
 	update_bestbuy()
