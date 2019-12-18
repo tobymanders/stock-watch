@@ -1,11 +1,13 @@
 body {
-    background: #FFCBAA url("../images/topleft.svg") no-repeat top left;
+    background: #FFBA8E url("../images/topleft.svg") no-repeat top left;
     font-family: "Helvetica Neue";
     background-attachment: fixed;
 }
 
-img {
-	display: block;
+.back {
+	padding: 4em 4em 0 4em;
+	cursor: pointer;
+	float: none;
 }
 
 h1 {
@@ -13,12 +15,29 @@ h1 {
 
 }
 
+.left {
+	text-align: left;
+}
+
+.right {
+	text-align: right;
+}
+
 table {
-	padding: 10em;
+	padding: 0 4em;
     border-collapse: separate;
     border-spacing: 0 0.5em;
     width: 1024px;
 
+}
+
+h3 {
+	font-size: 1em;
+	font-weight: lighter;
+}
+
+th {
+	font-size: 2em;
 }
 
 tr {
@@ -28,6 +47,7 @@ tr {
 tr td {
   padding: 15px 20px;
   background-color: rgba(255, 238, 227, .83);
+  text-align: center;
 }
 
 tr td:first-of-type {
