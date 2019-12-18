@@ -24,23 +24,11 @@
     <!-- <caption style="text-align:left">Stores In Your Area</caption> -->
       <tr class="table-title">
         <TH COLSPAN=3 style="text-align:left">
-         <H3>Found 13 stores near you...</H3>
+         <H3>Found {{ num_results }} stores near you...</H3>
         </TH>
       </tr>
 
       {% for row in table %}
-        
-        <!-- <tr class="spaceunder">
-            {% for item in row[:-1] %}
-            <td>
-                {{ item }}
-            </td>
-            {% endfor %}
-
-            <td>
-                {{ row[-1] }} mi.
-            </td>
-        </tr> -->
 
         <tr>          
             <td class="left">{{ row[1] }}</td>

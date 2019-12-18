@@ -27,8 +27,9 @@ def table_output():
     # product = request.args.get('Product')
     product = "AirPods"
     results = getresults.main(zipcode, product)
+    num_results = len(results)
     # render_template("output.html", table=results, product=product)
-    return render_template("output.html", table=results)
+    return render_template("output.html", table=results, num_results=num_results)
 
 if __name__ == "__main__":
     app.run(debug=True)

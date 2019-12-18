@@ -27,7 +27,7 @@ def main(address, product):
 
 	c.execute(f"""SELECT storename, retailer, address, city, state, ROUND(dist(lat, lng), 1)
 				 FROM instock
-				 WHERE dist(lat, lng) < 500 AND sku={productskus[product]}
+				 WHERE dist(lat, lng) < 50 AND sku={productskus[product]}
 				 GROUP BY storeID
 				 ORDER BY dist(lat, lng) ASC""")
 
