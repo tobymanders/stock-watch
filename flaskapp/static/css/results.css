@@ -1,25 +1,40 @@
 body {
-	background-color: #FFCBAA;
-	font-family: "Helvetica Neue";
+    background: #FFCBAA url("../images/topleft.svg") no-repeat top left;
+    font-family: "Helvetica Neue";
+    background-attachment: fixed;
+}
+
+img {
+	display: block;
 }
 
 h1 {
-	font-size: 2em;
+    font-size: 2em;
 
 }
 
 table {
-	border-collapse: separate;
-	border-spacing: 0 0.5em;
-		
+    border-collapse: separate;
+    border-spacing: 0 0.5em;
+    width: 1024px;
+
 }
 
 tr {
-	background-color: rgba(255, 238, 227, .93);
-	font-size: 1.2em;
-	border-radius:10px;
-	
+    font-size: 1.2em;
 }
 
+tr td {
+  padding: 15px 20px;
+  background-color: rgba(255, 238, 227, .83);
+}
 
+tr td:first-of-type {
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
 
+tr td:last-of-type {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
