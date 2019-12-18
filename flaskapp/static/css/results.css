@@ -14,6 +14,7 @@ h1 {
 }
 
 table {
+	padding: 10em;
     border-collapse: separate;
     border-spacing: 0 0.5em;
     width: 1024px;
