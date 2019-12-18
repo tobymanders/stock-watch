@@ -24,9 +24,11 @@ def no_results():
 def table_output():
     # return url
     zipcode = request.args.get('location')
-    product = request.args.get('Product')
+    # product = request.args.get('Product')
+    product = "AirPods"
     results = getresults.main(zipcode, product)
-    return render_template("output.html", table=results, product=product)
+    # render_template("output.html", table=results, product=product)
+    return render_template("output.html", table=results)
 
 if __name__ == "__main__":
     app.run(debug=True)

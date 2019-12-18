@@ -1,0 +1,36 @@
+body, main {
+	height: 100%;
+}
+
+main {
+	font-family: "Helvetica Neue";
+	padding: 0;
+	margin: 10em 0;
+
+}
+
+body {
+	background-color: #FFCECE;
+	text-align: center;
+	
+}
+
+label {
+	font-size: 2.2em;
+	color: #5F5E5E;
+}
+
+input {
+	font-size: 1.5em;
+	padding: 12px 20px;
+	margin: 20px;
+	border: none;
+	border-radius: 10px;
+	color: #666;
+}
+
+
+input::placeholder {
+	color:#A8A3A3;
+	text-align: center;
+}

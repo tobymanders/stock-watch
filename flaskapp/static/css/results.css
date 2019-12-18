@@ -1,0 +1,25 @@
+body {
+	background-color: #FFCBAA;
+	font-family: "Helvetica Neue";
+}
+
+h1 {
+	font-size: 2em;
+
+}
+
+table {
+	border-collapse: separate;
+	border-spacing: 0 0.5em;
+		
+}
+
+tr {
+	background-color: rgba(255, 238, 227, .93);
+	font-size: 1.2em;
+	border-radius:10px;
+	
+}
+
+
+
