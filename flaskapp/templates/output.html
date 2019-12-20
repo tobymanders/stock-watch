@@ -21,7 +21,6 @@
     </a>
     
     <table class="results" id="table" align="center">
-    <!-- <caption style="text-align:left">Stores In Your Area</caption> -->
       <tr class="table-title">
         <TH COLSPAN=3 style="text-align:left">
          <H3>Found {{ num_results }} stores near you...</H3>
@@ -29,9 +28,10 @@
       </tr>
 
       {% for row in table %}
-
-        <tr>          
-            <td class="left">{{ row[1] }}</td>
+        
+        <tr title="{{ row[2] }}">          
+            <td class="left">{{ row[-1] }}</td>
+            <td>{{ row[1] }}</td>
             <td>{{ row[3] + ', ' + row[4] }}</td>
             <td class="right">{{ row[5] }} mi. </td>
         </tr>

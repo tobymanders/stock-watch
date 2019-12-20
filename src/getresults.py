@@ -6,6 +6,10 @@ import updatedb
 import sys
 import numpy as np
 import mpu
+import time
+
+def get_timethresh(hours=24):
+	return time.time() - hours*60*60
 
 def main(address, product):
 
@@ -17,17 +21,36 @@ def main(address, product):
 		coords_2 = (lat, long)
 		return mpu.haversine_distance(coords_1, coords_2) * 0.621371
 
+	def format_time(seconds):
+		if seconds < 60*60: #minutes case
+			return f'{int(seconds/60)} minutes ago'
+		elif seconds < 60*60*24: #hours case
+			return f'{int(seconds/60/60)} hours ago'
+		else:
+			return f'{int(seconds/60/60/24)} days ago'
+
+	def make_address(address, city, state):
+		print(address)
+		return ', '.join((str(address), city, state))
+
 
 	conn = sqlite3.connect('../data/database.db')
 	conn.create_function("dist", 2, dist)
+	conn.create_function("format_time", 1, format_time)
+	conn.create_function("make_address", 3, make_address)
 	c = conn.cursor()
 
 
 	productskus = {'AirPods' : 6084400, 'AirPods Pro' : 5706659}
 
-	c.execute(f"""SELECT storename, retailer, address, city, state, ROUND(dist(lat, lng), 1)
+	timethresh = get_timethresh(24*20)
+	currtime = time.time()
+
+	c.execute(f"""SELECT storename, retailer, make_address(address, city, state), city, state, ROUND(dist(lat, lng), 1), format_time({currtime} - time) 
 				 FROM instock
-				 WHERE dist(lat, lng) < 50 AND sku={productskus[product]}
+				 WHERE dist(lat, lng) < 50 
+				       AND sku={productskus[product]}
+				       AND time>{timethresh}
 				 GROUP BY storeID
 				 ORDER BY dist(lat, lng) ASC""")
 

@@ -7,13 +7,13 @@ import requests
 import time
 import sqlite3
 import geocoder as gc
-import pickle
+import pickle as pkl
 
 nzips = 200 # take top n zip codes by population
-zips = pickle.load(open('../data/zips.pkl', 'rb'))[:nzips]
+zips = pkl.load(open('../data/zips.pkl', 'rb'))[:nzips]
 
 gc_api_key = '9GOLlJifpGuxjGPy2519C6NkcmtXxAYM'
-latlngdict = pickle.load(open('../data/latlngdict.pkl', 'rb'))
+latlngdict = pkl.load(open('../data/latlngdict.pkl', 'rb'))
 
 def ziptolatlng(address):
 
@@ -24,7 +24,7 @@ def ziptolatlng(address):
 		if g.status_code==200:
 			lat, lng = g.latlng
 			latlngdict[address] = (lat, lng) # Store so do not have to fetch next time
-			pickle.dump(latlngdict, open('../data/latlngdict.pkl', 'wb'))
+			pkl.dump(latlngdict, open('../data/latlngdict.pkl', 'wb'))
 		else:
 			lat, lng = 500, 500
 	return lat, lng
@@ -68,7 +68,7 @@ def update_bestbuy():
 	# Set up Best Buy requests
 	bb_api_key = 'Syg9LF6J4rNlfmYpxgzCejev'
 	bb_product_skus = {'airpods_pro': '5706659', 'airpods': '6084400'}
-	zip_codes = [str(zip_) for zip_ in zips]
+	zip_codes, _, _ = pkl.load(open('../data/zips.pkl', 'rb'))
 	bb_base_url = 'https://api.bestbuy.com/v1/products/'
 	attribs = "?postalCode="
 

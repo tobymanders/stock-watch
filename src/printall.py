@@ -20,5 +20,5 @@ def return_locs():
 if __name__ == "__main__":
 	res = main()
 	for store in res:
-		print(store[:8])
+		print(store[:10])
 	print(f'{len(res)} RESULTS')

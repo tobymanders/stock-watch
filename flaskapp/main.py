@@ -25,7 +25,7 @@ def table_output():
     # return url
     zipcode = request.args.get('location')
     # product = request.args.get('Product')
-    product = "AirPods"
+    product = "AirPods" # TODO: CHANGE BACK TO THE ARG INPUT
     results = getresults.main(zipcode, product)
     num_results = len(results)
     # render_template("output.html", table=results, product=product)
